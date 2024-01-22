@@ -85,4 +85,4 @@ class ImageStitching():
         
         final_result = result[min_row:max_row, min_col:max_col, :]
         
-        return final_result
+        return final_result / 255.0
