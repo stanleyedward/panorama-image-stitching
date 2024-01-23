@@ -69,7 +69,7 @@ class ImageStitching:
             reprojThresh: threshold for error
 
         Returns:
-            M (Tuple): (matches, H, status)
+            M (Tuple): (matches, Homography matrix, status)
         """
         keypoints_train_image = np.float32(
             [keypoint.pt for keypoint in keypoints_train_image]
