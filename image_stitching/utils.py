@@ -1,5 +1,5 @@
 import cv2
-from image_stitching import ImageStitching
+from .image_stitching import ImageStitching
 import sys
 import numpy as np
 
