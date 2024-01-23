@@ -7,12 +7,12 @@ class ImageStitching:
         super().__init__()
         self.smoothing_window_size = 800
 
-    def read_images(self, image):
-        photo = cv2.imread(image)
-        photo = cv2.cvtColor(photo, cv2.COLOR_BGR2RGB)
-        photo_gray = cv2.cvtColor(photo, cv2.COLOR_RGB2GRAY)
+    def give_gray(self, image):
+        # photo = cv2.imread(image)
+        # photo = cv2.cvtColor(photo, cv2.COLOR_BGR2RGB)
+        photo_gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
 
-        return photo, photo_gray
+        return image, photo_gray
 
     @staticmethod
     def _sift_detector(image):

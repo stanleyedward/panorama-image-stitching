@@ -4,13 +4,13 @@ import sys
 import numpy as np
 
 
-def forward(query_image_dir, train_image_dir):
+def forward(query_photo, train_photo):
     image_stitching = ImageStitching()
-    query_photo, query_photo_gray = image_stitching.read_images(
-        query_image_dir
+    _, query_photo_gray = image_stitching.give_gray(
+        query_photo
     )  # left image
-    train_photo, train_photo_gray = image_stitching.read_images(
-        train_image_dir
+    _, train_photo_gray = image_stitching.give_gray(
+        train_photo
     )  # right image
 
     keypoints_train_image, features_train_image = image_stitching._sift_detector(
@@ -29,7 +29,7 @@ def forward(query_image_dir, train_image_dir):
     )
 
     if M is None:
-        print(f"Error")
+        return "Error cannot stitch images"
 
     (matches, homography_matrix, status) = M
 
@@ -46,7 +46,19 @@ def forward(query_image_dir, train_image_dir):
 
 if __name__ == "__main__":
     try:
-        result = forward(query_image_dir=sys.argv[1], train_image_dir=sys.argv[2])
+        query_image = sys.argv[1]
+        train_image = sys.argv[2]
+        def read_images(image):
+            photo = cv2.imread(image)
+            photo = cv2.cvtColor(photo, cv2.COLOR_BGR2RGB)
+
+            return photo
+        query_image = read_images(query_image)
+        train_image = read_images(train_image)
+        
+        
+        
+        result = forward(query_photo=query_image, train_photo=train_image)
         cv2.imwrite("outputs/panorama_image.jpg", result)
     except IndexError:
         print("Please input atleast two source images")
