@@ -6,12 +6,8 @@ import numpy as np
 
 def forward(query_photo, train_photo):
     image_stitching = ImageStitching()
-    _, query_photo_gray = image_stitching.give_gray(
-        query_photo
-    )  # left image
-    _, train_photo_gray = image_stitching.give_gray(
-        train_photo
-    )  # right image
+    _, query_photo_gray = image_stitching.give_gray(query_photo)  # left image
+    _, train_photo_gray = image_stitching.give_gray(train_photo)  # right image
 
     keypoints_train_image, features_train_image = image_stitching._sift_detector(
         train_photo_gray
@@ -40,7 +36,7 @@ def forward(query_photo, train_photo):
 
     result_float32 = np.float32(result)
     result_rgb = cv2.cvtColor(result_float32, cv2.COLOR_BGR2RGB)
-    
+
     return result_rgb
 
 
@@ -48,16 +44,16 @@ if __name__ == "__main__":
     try:
         query_image = sys.argv[1]
         train_image = sys.argv[2]
+
         def read_images(image):
             photo = cv2.imread(image)
             photo = cv2.cvtColor(photo, cv2.COLOR_BGR2RGB)
 
             return photo
+
         query_image = read_images(query_image)
         train_image = read_images(train_image)
-        
-        
-        
+
         result = forward(query_photo=query_image, train_photo=train_image)
         cv2.imwrite("outputs/panorama_image.jpg", result)
     except IndexError:
