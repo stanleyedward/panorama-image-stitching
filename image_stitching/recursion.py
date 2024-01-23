@@ -3,7 +3,6 @@ import numpy as np
 import cv2
 
 def recurse(image_list, no_of_images):
-    print(f"no of images: {no_of_images}")
     if no_of_images == 2:
         result = utils.forward(query_photo=image_list[no_of_images-2], train_photo=image_list[no_of_images-1])
         
