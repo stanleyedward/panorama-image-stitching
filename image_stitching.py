@@ -2,10 +2,8 @@ import numpy as np
 import cv2
 
 class ImageStitching():
-    def __init__(self, query_image, train_image):
+    def __init__(self):
         super().__init__()
-        self.query_image = query_image
-        self.train_image = train_image
         self.smoothing_window_size = 800
     
     def read_images(self, image):
@@ -46,14 +44,14 @@ class ImageStitching():
             print(f"Minimum match count not satisfied cannot get homopgrahy")
             return None
         
-    def create_mask(self, version):
-        height_query_photo = self.query_photo.shape[0]
-        width_query_photo = self.query_photo.shape[1]
-        width_train_photo = self.train_photo.shape[1]
+    def create_mask(self,query_image, train_image, version):
+        height_query_photo = query_image.shape[0]
+        width_query_photo = query_image.shape[1]
+        width_train_photo = train_image.shape[1]
         height_panorama = height_query_photo
         width_panorama = width_query_photo +width_train_photo
         offset = int(self.smoothing_window_size / 2)
-        barrier = self.query_photo.shape[1] - int(self.smoothing_window_size / 2)
+        barrier = query_image.shape[1] - int(self.smoothing_window_size / 2)
         mask = np.zeros((height_panorama, width_panorama))
         if version == 'left_image':
             mask[:, barrier - offset:barrier + offset ] = np.tile(np.linspace(1, 0, 2 * offset ).T, (height_panorama, 1))
@@ -63,19 +61,19 @@ class ImageStitching():
             mask[:, barrier + offset:] = 1
         return cv2.merge([mask, mask, mask])
     
-    def blending_smoothing(self, homography_matrix):
-        height_img1 = self.query_photo.shape[0]
-        width_img1 = self.query_photo.shape[1]
-        width_img2 = self.train_photo.shape[1]
+    def blending_smoothing(self, query_image, train_image, homography_matrix):
+        height_img1 = query_image.shape[0]
+        width_img1 = query_image.shape[1]
+        width_img2 = train_image.shape[1]
         height_panorama = height_img1
         width_panorama = width_img1 +width_img2
         
         panorama1 = np.zeros((height_panorama, width_panorama, 3))
-        mask1 = self.create_mask(version='left_image')
-        panorama1[0:self.query_photo.shape[0], 0:self.query_photo.shape[1], :] = self.query_photo
+        mask1 = self.create_mask(query_image, train_image, version='left_image')
+        panorama1[0:query_image.shape[0], 0:query_image.shape[1], :] = query_image
         panorama1 *= mask1
-        mask2 = self.create_mask(version='right_image')
-        panorama2 = cv2.warpPerspective(self.train_photo, homography_matrix, (width_panorama, height_panorama))*mask2
+        mask2 = self.create_mask(query_image, train_image, version='right_image')
+        panorama2 = cv2.warpPerspective(train_image, homography_matrix, (width_panorama, height_panorama))*mask2
         result=panorama1+panorama2
         
         #remove extra blackspace
@@ -85,4 +83,4 @@ class ImageStitching():
         
         final_result = result[min_row:max_row, min_col:max_col, :]
         
-        return final_result / 255.0
+        return final_result 
