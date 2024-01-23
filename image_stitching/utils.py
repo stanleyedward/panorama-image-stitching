@@ -14,7 +14,7 @@ def forward(query_photo, train_photo):
         train_photo (nnumpy array): train image
 
     Returns:
-        result image (numpy array): RGB result image 
+        result image (numpy array): RGB result image
     """
     image_stitching = ImageStitching()
     _, query_photo_gray = image_stitching.give_gray(query_photo)  # left image

@@ -3,8 +3,8 @@ import cv2
 
 
 class ImageStitching:
-    """containts the utilities required to stitch images
-    """
+    """containts the utilities required to stitch images"""
+
     def __init__(self):
         super().__init__()
         self.smoothing_window_size = 800
@@ -13,7 +13,7 @@ class ImageStitching:
         """receives an image array and returns grayscaled image
 
         Args:
-            image (numpy array): array of images 
+            image (numpy array): array of images
 
         Returns:
             image (numpy array): same as image input
