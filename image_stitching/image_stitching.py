@@ -3,25 +3,52 @@ import cv2
 
 
 class ImageStitching:
+    """containts the utilities required to stitch images
+    """
     def __init__(self):
         super().__init__()
         self.smoothing_window_size = 800
 
     def give_gray(self, image):
-        # photo = cv2.imread(image)
-        # photo = cv2.cvtColor(photo, cv2.COLOR_BGR2RGB)
+        """receives an image array and returns grayscaled image
+
+        Args:
+            image (numpy array): array of images 
+
+        Returns:
+            image (numpy array): same as image input
+            photo_gray (numpy array): grayscaled images
+        """
         photo_gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
 
         return image, photo_gray
 
     @staticmethod
     def _sift_detector(image):
+        """Applies SIFT algorithm to the given image
+
+        Args:
+            image (numpy array): input image
+
+        Returns:
+            keypoints, features
+        """
         descriptor = cv2.SIFT_create()
         keypoints, features = descriptor.detectAndCompute(image, None)
 
         return keypoints, features
 
     def create_and_match_keypoints(self, features_train_image, features_query_image):
+        """Creates and Matches keypoints from the SIFT features using Brute Force matching
+        by checking the L2 norm of the feature vector
+
+        Args:
+            features_train_image: SIFT features of train image
+            features_query_image: SIFT features of query image
+
+        Returns:
+            matches (List): matches in features of train and query image
+        """
         bf = cv2.BFMatcher(cv2.NORM_L2, crossCheck=True)
 
         best_matches = bf.match(features_train_image, features_query_image)
@@ -32,6 +59,18 @@ class ImageStitching:
     def compute_homography(
         self, keypoints_train_image, keypoints_query_image, matches, reprojThresh
     ):
+        """Computes the Homography to map images to a single plane,
+        uses RANSAC algorithm to find the best matches iteratively.
+
+        Args:
+            keypoints_train_image: keypoints found using SIFT in train image
+            keypoints_query_image: keypoints found using SIFT in query image
+            matches: matches found using Brute Force
+            reprojThresh: threshold for error
+
+        Returns:
+            M (Tuple): (matches, H, status)
+        """
         keypoints_train_image = np.float32(
             [keypoint.pt for keypoint in keypoints_train_image]
         )
@@ -58,6 +97,17 @@ class ImageStitching:
             return None
 
     def create_mask(self, query_image, train_image, version):
+        """Creates the mask using query and train images for blending the images,
+        using a gaussian smoothing window/kernel
+
+        Args:
+            query_image (numpy array)
+            train_image (numpy array)
+            version (str) == 'left_image' or 'right_image'
+
+        Returns:
+            masks
+        """
         height_query_photo = query_image.shape[0]
         width_query_photo = query_image.shape[1]
         width_train_photo = train_image.shape[1]
@@ -79,6 +129,17 @@ class ImageStitching:
         return cv2.merge([mask, mask, mask])
 
     def blending_smoothing(self, query_image, train_image, homography_matrix):
+        """blends both query and train image via the homography matrix,
+        and ensures proper blending and smoothing using masks created in create_masks()
+
+        Args:
+            query_image (numpy array)
+            train_image (numpy array)
+            homography_matrix (numpy array): Homography to map images to a single plane
+
+        Returns:
+            panoramic image (numpy array)
+        """
         height_img1 = query_image.shape[0]
         width_img1 = query_image.shape[1]
         width_img2 = train_image.shape[1]
