@@ -1,13 +1,13 @@
 ``` sh
-            ____                                             
-            |  _ \ __ _ _ __   ___  _ __ __ _ _ __ ___   __ _ 
-            | |_) / _` | '_ \ / _ \| '__/ _` | '_ ` _ \ / _` |
-            |  __/ (_| | | | | (_) | | | (_| | | | | | | (_| |
-            |_|   \__,_|_| |_|\___/|_|  \__,_|_| |_| |_|\__,_|
+____                                             
+|  _ \ __ _ _ __   ___  _ __ __ _ _ __ ___   __ _ 
+| |_) / _` | '_ \ / _ \| '__/ _` | '_ ` _ \ / _` |
+|  __/ (_| | | | | (_) | | | (_| | | | | | | (_| |
+|_|   \__,_|_| |_|\___/|_|  \__,_|_| |_| |_|\__,_|
 
 ```
 
-Panoramic image stitching with overlapping images using SIFT detector, RANSAC algorithm and blending
+Panoramic image stitching with overlapping images using SIFT detector, Homography, RANSAC algorithm and blending.
 
 ## Try it yourself
 
@@ -67,3 +67,13 @@ Panoramic image stitching with overlapping images using SIFT detector, RANSAC al
     Initializing...
     Panoramic image saved at: outputs/panorama_image.jpg
     ```
+
+
+## References
+
+
+- [First Principles of Computer Vision - Shree K. Nayar](https://fpcv.cs.columbia.edu/)
+- [Distinctive Image Features from Scale-Invariant Keypoints (SIFT)](https://people.eecs.berkeley.edu/~malik/cs294/lowe-ijcv04.pdf)
+- https://github.com/linrl3/Image-Stitching-OpenCV
+- https://github.com/Yunyung/Automatic-Panoramic-Image-Stitching
+- https://www.csie.ntu.edu.tw/~cyy/courses/vfx/12spring/lectures/handouts/lec04_stitching_4up.pdf
