@@ -1,1 +1,1 @@
-print(f"initializing...")
+print(f"Initializing...")
