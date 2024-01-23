@@ -7,7 +7,7 @@ class ImageStitching:
 
     def __init__(self):
         super().__init__()
-        self.smoothing_window_size = 800
+        self.smoothing_window_size = 500
 
     def give_gray(self, image):
         """receives an image array and returns grayscaled image
@@ -131,6 +131,7 @@ class ImageStitching:
     def blending_smoothing(self, query_image, train_image, homography_matrix):
         """blends both query and train image via the homography matrix,
         and ensures proper blending and smoothing using masks created in create_masks()
+        to give a seamless panorama.
 
         Args:
             query_image (numpy array)
