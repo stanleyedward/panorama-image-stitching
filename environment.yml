@@ -1,0 +1,9 @@
+name: panorama
+channels:
+  - defaults
+dependencies:
+  - python=3.11.5
+  - pip:
+      - numpy==1.26.2
+      - opencv-python==4.9.0.80
+      - pyfiglet==1.0.2
