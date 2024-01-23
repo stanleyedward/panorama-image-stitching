@@ -68,6 +68,23 @@ Panoramic image stitching with overlapping images using SIFT detector, Homograph
     Panoramic image saved at: outputs/panorama_image.jpg
     ```
 
+## Explained
+
+
+1. #### Feature Detection using SIFT 
+
+The scale-invariant feature transform is a computer vision algorithm to detect interest points, describe, and match local features in images, invented by David Lowe in 1999.
+![Alt text](images/sift_features_located.jpeg)
+
+2. #### Matching keypoints
+![Alt text](images/keypoints_matched.jpeg)
+
+3. #### Computing the Homography Matrix
+
+4. #### RANSAC algorithm
+
+5. #### Weighted Blending
+
 
 ## References
 
