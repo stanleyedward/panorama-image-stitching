@@ -4,6 +4,15 @@ import cv2
 
 
 def recurse(image_list, no_of_images):
+    """Recursive function to get panorama of multiple images
+
+    Args:
+        image_list (List): list of numpy array of images
+        no_of_images (int): no of images read through cmdline
+
+    Returns:
+        result (numpy array): RGB panoramic image
+    """
     if no_of_images == 2:
         result = utils.forward(
             query_photo=image_list[no_of_images - 2],

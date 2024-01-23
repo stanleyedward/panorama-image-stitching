@@ -5,6 +5,14 @@ import cv2
 
 
 def main(image_dir_list):
+    """Main function of the Repository.
+    Takes in list of image dir, runs the complete pipeline 
+    to create and export a panoramic image
+
+    Args:
+        image_dir_list (List): List of image dirs passed in cmdline
+    """
+    
     images_list, no_of_images = read_images.read(image_dir_list)
     result = recursion.recurse(images_list, no_of_images)
     cv2.imwrite("outputs/panorama_image.jpg", result)

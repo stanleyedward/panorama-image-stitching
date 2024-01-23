@@ -5,6 +5,17 @@ import numpy as np
 
 
 def forward(query_photo, train_photo):
+    """Runs a forward pass using the ImageStitching() class in utils.py.
+    Takes in a query image and train image and runs entire pipeline to return
+    a panoramic image.
+
+    Args:
+        query_photo (numpy array): query image
+        train_photo (nnumpy array): train image
+
+    Returns:
+        result image (numpy array): RGB result image 
+    """
     image_stitching = ImageStitching()
     _, query_photo_gray = image_stitching.give_gray(query_photo)  # left image
     _, train_photo_gray = image_stitching.give_gray(train_photo)  # right image
