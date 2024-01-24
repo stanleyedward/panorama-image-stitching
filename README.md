@@ -136,6 +136,7 @@ Keypoints are characterized by descriptors, which are feature vectors representi
 The L2 norm is calculated using the Euclidean distance formula, which is the square root of the sum of squared differences between corresponding elements of two vectors.
 
 Let's denote the descriptor vectors of two keypoints as $v_1$​ and $v_2$​, and their corresponding L2 (Euclidean) distance as $d_L2$:​
+
 $$ d_{L2}(v_1, v_2) = \sqrt{\sum_{i=1}^{n} (v_{1i} - v_{2i})^2} $$
 
 
