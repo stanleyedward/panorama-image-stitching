@@ -170,7 +170,9 @@ Repeat 1~3 step, randomly sample points N times and get the heighest score solut
 
 5. #### Weighted Blending
 
-As you 
+As you may have noticed, our image isn't seamless yet. Hard seams may arise due to vignetting, exposure differences, illumination differences. Averaging the images doesnt solve the issue and seams might still be visible.
+
+This is were weighted blending comes in.
 ![Alt text](images/unblended_and_unsmoothed_output.jpeg)
 
 ![Alt text](images/output.png)
