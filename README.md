@@ -87,16 +87,16 @@ $$D(x, y, σ) = (G(x, y, kσ) − G(x, y, σ)) ∗ I(x, y)$$
 $$= L(x, y, kσ) − L(x, y, σ)$$
 
 
-<img src="images/Difference_of_gaussian.png" alt="drawing" style="width:200;"/> 
-<img src="images/DoGvsLaplace.png" alt="drawing" style="width:200;"/>
-
-
+<img src="images/Difference_of_gaussian.png" alt="drawing" style="width:200;"/> <img src="images/DoGvsLaplace.png" alt="drawing" style="width:200;"/>
 
 
 In addition, the difference-of-Gaussian function provides a close approximation to the
 scale-normalized Laplacian of Gaussian, σ2∇2G, as studied by Lindeberg (1994).
 and therefore,
+
+
 $$G(x, y, kσ) − G(x, y, σ) ≈ (k − 1)σ^2∇^b2G$$
+
 
 the Laplacian of Gaussian is used for feature detection by highlighting regions of rapid intensity change in an image, it is is often applied to identify key points or interest points in an image.
 
@@ -119,6 +119,7 @@ By analyzing the gradient orientation around a keypoint, SIFT ensures that the d
 </p>
 
 ### Result of SIFT on my input
+
 ![Alt text](images/sift_features_located.jpeg)
 
 2. #### Matching keypoints
@@ -134,8 +135,7 @@ The L2 norm is calculated using the Euclidean distance formula, which is the squ
 Let's denote the descriptor vectors of two keypoints as $v_1$​ and $v_2$​, and their corresponding L2 (Euclidean) distance as $d_L2$​:
 
 
-$$ d_{L2}(\mathbf{v}_1, \mathbf{v}_2) =
-  \sqrt{\sum_{i=1}^{n} (v_{1i} - v_{2i})^2} $$
+$ d_{L2}(\mathbf{v}_1, \mathbf{v}_2) = \sqrt{\sum_{i=1}^{n} (v_{1i} - v_{2i})^2} $
 
 
 ![Alt text](images/keypoints_matched.jpeg)
