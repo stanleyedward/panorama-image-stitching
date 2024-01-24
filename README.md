@@ -87,7 +87,7 @@ $$D(x, y, σ) = (G(x, y, kσ) − G(x, y, σ)) ∗ I(x, y)$$
 $$= L(x, y, kσ) − L(x, y, σ)$$
 
 <p align="center">
-<img src="images/Difference_of_gaussian.png" alt="drawing" style="width:600;"/> 
+<img src="images/Difference_of_gaussian.png" alt="drawing" style="width:400;"/> 
 </p>
 
 In addition, the difference-of-Gaussian function provides a close approximation to the
@@ -98,7 +98,7 @@ and therefore,
 $$G(x, y, kσ) − G(x, y, σ) ≈ (k − 1)σ^2∇^b2G$$
 
 <p align="center">
-<img src="images/DoGvsLaplace.png" alt="drawing" style="width:600;"/>
+<img src="images/DoGvsLaplace.png" alt="drawing" style="width:400;"/>
 </p>
 
 the Laplacian of Gaussian is used for feature detection by highlighting regions of rapid intensity change in an image, it is is often applied to identify key points or interest points in an image.
