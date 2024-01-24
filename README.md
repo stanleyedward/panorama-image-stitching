@@ -127,7 +127,10 @@ The L2 norm is calculated using the Euclidean distance formula, which is the squ
 
 Let's denote the descriptor vectors of two keypoints as $v_1$​ and $v_2$​, and their corresponding L2 (Euclidean) distance as $d_L2$​:
 
-$$d_{L2}(\mathbf{v}_1, \mathbf{v}_2) = \sqrt{\sum_{i=1}^{n} (v_{1i} - v_{2i})^2}$$
+
+$$ d_{L2}(\mathbf{v}_1, \mathbf{v}_2) = \sqrt{\sum_{i=1}^{n} (v_{1i} - v_{2i})^2} $$
+
+
 
 ![Alt text](images/keypoints_matched.jpeg)
 
@@ -138,11 +141,11 @@ A homography matrix, often denoted as $H$, is a transformation matrix used in co
 
 The homography matrix is a 3x3 matrix and can be represented as:
 
-$$ H = \begin{bmatrix} h_{11} & h_{12} & h_{13} \\ h_{21} & h_{22} & h_{23} \\ h_{31} & h_{32} & h_{33} \end{bmatrix} $$
+$$ H = \begin{bmatrix} h_{11} & h_{12} & h_{13} \\\ h_{21} & h_{22} & h_{23} \\\ h_{31} & h_{32} & h_{33} \end{bmatrix} $$
 
 Homography Transformation Equation:
 
-$$ \begin{bmatrix} x' \\ y' \\ w' \end{bmatrix} = \begin{bmatrix} h_{11} & h_{12} & h_{13} \\ h_{21} & h_{22} & h_{23} \\ h_{31} & h_{32} & h_{33} \end{bmatrix} \cdot \begin{bmatrix} x \\ y \\ 1 \end{bmatrix} $$
+$$ \begin{bmatrix} x' \\\ y' \\\ w' \end{bmatrix} = \begin{bmatrix} h_{11} & h_{12} & h_{13} \\\ h_{21} & h_{22} & h_{23} \\\ h_{31} & h_{32} & h_{33} \end{bmatrix} \cdot \begin{bmatrix} x \\\ y \\\ 1 \end{bmatrix} $$
 
 
 
@@ -166,7 +169,7 @@ The step of RANSAC as follows:
 
 Repeat 1~3 step, randomly sample points N times and get the heighest score solution.
 
-<img src="images/RANSAC.png" alt="drawing" style="width:500px;"/>
+<img src="images/RANSAC.png" alt="drawing" style="width:800px;"/>
 
 `note:` The number of outliers needs to be < 50% for RANSAC to work.
 
