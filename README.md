@@ -7,7 +7,7 @@ ____
 
 ```
 
-Panoramic image stitching with overlapping images using SIFT detector, Homography, RANSAC algorithm and blending.
+Panoramic image stitching with overlapping images using SIFT detector, Homography, RANSAC algorithm and weighted blending.
 
 ## Try it yourself
 
@@ -28,11 +28,11 @@ Panoramic image stitching with overlapping images using SIFT detector, Homograph
     ```
 
 
-3. #### Add your custom images to the `inputs/` folder manually or using the cmdline:
+3. #### Add your custom images to the `inputs/` folder manually or using the command line:
     ```sh
     $ mv left.jpg middle.jpg right.jpg inputs/
     ```
-    dont have any images?   try the preloaded ones!
+    dont have any images?   try the preloaded ones located in `inputs/`
 
 
 4. #### Run the script
@@ -41,7 +41,7 @@ Panoramic image stitching with overlapping images using SIFT detector, Homograph
     $ python panorama.py inputs/left.jpg inputs/middle.jpg inputs/right.jpg
     ```
 
-    `Caution:` the order of the images should be `left to right` from the viewing point. 
+    `Caution:` The sequence of images should be ordered `left to right` from the viewing point. 
 
 
 5. #### Check it out!
@@ -73,16 +73,17 @@ Panoramic image stitching with overlapping images using SIFT detector, Homograph
 
 1. #### Feature Detection using SIFT 
 
-The scale-invariant feature transform is a computer vision algorithm to detect interest points, describe, and match local features in images, invented by David Lowe in 1999.
+The **scale-invariant feature transform** is a computer vision algorithm to detect interest points, describe, and match local features in images. [David Lowe 1999]
 
-The image is convolved with a series of Gaussian filters at different scales to create a scale-space representation. Local extrema in this scale-space are identified as potential key points. There-fore, the scale space of an image is defined as a function, $L(x, y, σ)$, that is produced from the convolution of a variable-scale Gaussian, $G(x, y, σ)$, with an input image, $I(x, y)$:
+The image is convolved with a series of Gaussian filters at different scales to create a scale-space representation. Local extrema in this scale-space are identified as potential key points. Therefore, the scale space of an image is defined as a function, $L(x, y, σ)$, that is produced from the convolution of a variable-scale Gaussian, $G(x, y, σ)$, with an input image, $I(x, y)$:
 
 where    $$L(x, y, \sigma) = G(x, y, \sigma) \ast I(x, y)$$
 
-To efficiently detect stable keypoint locations in scale space, we have proposed (Lowe, 1999)
+To efficiently detect stable keypoint locations in scale space,
 using scale-space extrema in the difference-of-Gaussian function convolved with the image,
 $D(x, y, σ)$, which can be computed from the difference of two nearby scales separated by a
 constant multiplicative factor k:
+
 $$D(x, y, σ) = (G(x, y, kσ) − G(x, y, σ)) ∗ I(x, y)$$
 $$= L(x, y, kσ) − L(x, y, σ)$$
 
@@ -101,7 +102,7 @@ $$G(x, y, kσ) − G(x, y, σ) ≈ (k − 1)σ^2∇^b2G$$
 <img src="images/DoGvsLaplace.png" alt="drawing" style="width:400;"/>
 </p>
 
-the Laplacian of Gaussian is used for feature detection by highlighting regions of rapid intensity change in an image, it is is often applied to identify key points or interest points in an image.
+the Laplacian of Gaussian is used for feature detection by highlighting regions of rapid intensity change in an image, it is often applied to identify key points or interest points in an image.
 
 ### To refine keypoint locations:
 
@@ -115,7 +116,7 @@ Fit a 3D quadratic function to the nearby DoG extrema to achieve subpixel precis
 
 Compute gradient magnitude and orientation around each keypoint. Construct histograms to determine the dominant orientation. Keypoints are assigned orientations based on the histogram peaks. 
 
-By analyzing the gradient orientation around a keypoint, SIFT ensures that the descriptor is invariant to rotation. The gradient information is used to construct a descriptor that captures the local structure around the keypoint. 
+By analyzing the gradient orientation around a keypoint, **SIFT ensures that the descriptor is invariant to rotation**. The gradient information is used to construct a descriptor that captures the local structure around the keypoint. 
 
 <p align="center">
 <img src="images/gradient_orientation.png" alt="drawing" style="width:600px;"/>
@@ -155,6 +156,8 @@ Homography Transformation Equation:
 
 $$ \begin{bmatrix} x' \\\ y' \\\ w' \end{bmatrix} = \begin{bmatrix} h_{11} & h_{12} & h_{13} \\\ h_{21} & h_{22} & h_{23} \\\ h_{31} & h_{32} & h_{33} \end{bmatrix} \cdot \begin{bmatrix} x \\\ y \\\ 1 \end{bmatrix} $$
 
+- It helps align and transform the images correctly, ensuring that corresponding points in different images are mapped to the same coordinates in the final panorama.
+
 
 4. #### RANSAC algorithm
 
@@ -174,8 +177,6 @@ The steps of RANSAC algorithm are as follows:
     5. Choose the model that has the largest No of M inliers
 
 
-Repeat 1~3 step, randomly sample points N times and get the heighest score solution.
-
 <p align="center">
 <img src="images/RANSAC.png" alt="drawing" style="width:600px;"/>
 </p>
@@ -184,7 +185,7 @@ Repeat 1~3 step, randomly sample points N times and get the heighest score solut
 
 5. #### Weighted Blending
 
-Hard seams may arise due to vignetting, exposure differences, illumination differences. Averaging the images doesnt solve the issue and seams might still be visible. Therefore weighted blending comes to use.
+Hard seams may arise due to vignetting, exposure differences, illumination differences. Averaging the images doesn't solve the issue and seams might still be visible. Therefore weighted blending comes into use.
 
 ![Alt text](images/unblended_and_unsmoothed_output.jpeg)
 
@@ -206,8 +207,13 @@ The mask should have the same dimensions as the image, and each pixel in the mas
 
 The purpose of weighted blending is to create a seamless transition between overlapping regions of images, taking into account the relative importance or contribution of each pixel, allowing for a smooth and controlled transition in overlapping regions.
 
+###  The Final Output After blending the 2 images.
+
 ![Alt text](images/output.png)
 
+### - Stitching multiple images using `recursion` we can obtain a wider panorama:
+
+![Alt text](outputs/panorama_image.jpg)
 
 ## References
 
