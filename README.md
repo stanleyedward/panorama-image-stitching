@@ -175,10 +175,24 @@ Repeat 1~3 step, randomly sample points N times and get the heighest score solut
 
 5. #### Weighted Blending
 
-As you may have noticed, our image isn't seamless yet. Hard seams may arise due to vignetting, exposure differences, illumination differences. Averaging the images doesnt solve the issue and seams might still be visible.
+Hard seams may arise due to vignetting, exposure differences, illumination differences. Averaging the images doesnt solve the issue and seams might still be visible. Therefore weighted blending comes to use.
 
-This is were weighted blending comes in.
 ![Alt text](images/unblended_and_unsmoothed_output.jpeg)
+
+Weight blending using masks involves blending images based on pixel weights assigned via masks.
+Masks are binary images where each pixel value determines the contribution or weight of the corresponding pixel in the blending process.
+
+![Alt text](images/weighted_blending.jpeg)
+
+
+
+![Alt text](images/weighted_blend_plot.jpg)
+
+The mask should have the same dimensions as the image, and each pixel in the mask is assigned a weight value between 0 and 1. The mask is then normalized to maintain the overall color during blending.
+
+![Alt text](images/blending_weights.png)
+
+The purpose of weighted blending is to create a seamless transition between overlapping regions of images, taking into account the relative importance or contribution of each pixel, allowing for a smooth and controlled transition in overlapping regions.
 
 ![Alt text](images/output.png)
 
@@ -186,7 +200,11 @@ This is were weighted blending comes in.
 
 
 - [First Principles of Computer Vision - Shree K. Nayar](https://fpcv.cs.columbia.edu/)
+
 - [Distinctive Image Features from Scale-Invariant Keypoints (SIFT)](https://people.eecs.berkeley.edu/~malik/cs294/lowe-ijcv04.pdf)
+
 - https://github.com/linrl3/Image-Stitching-OpenCV
+
 - https://github.com/Yunyung/Automatic-Panoramic-Image-Stitching
+
 - https://www.csie.ntu.edu.tw/~cyy/courses/vfx/12spring/lectures/handouts/lec04_stitching_4up.pdf
