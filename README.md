@@ -87,8 +87,9 @@ $$D(x, y, σ) = (G(x, y, kσ) − G(x, y, σ)) ∗ I(x, y)$$
 $$= L(x, y, kσ) − L(x, y, σ)$$
 
 
-<img src="images/Difference_of_gaussian.png" alt="drawing" style="width:400px;"/>
-<img src="images/DoGvsLaplace.png" alt="drawing" style="width:400px;"/>
+<img src="images/Difference_of_gaussian.png" alt="drawing" style="width:349;"/> 
+<img src="images/DoGvsLaplace.png" alt="drawing" style="width:350;"/>
+
 
 
 
@@ -97,20 +98,24 @@ scale-normalized Laplacian of Gaussian, σ2∇2G, as studied by Lindeberg (1994)
 and therefore,
 $$G(x, y, kσ) − G(x, y, σ) ≈ (k − 1)σ^2∇^b2G$$
 
+the Laplacian of Gaussian is used for feature detection by highlighting regions of rapid intensity change in an image, it is is often applied to identify key points or interest points in an image.
+
 ### To refine keypoint locations:
 
 Fit a 3D quadratic function to the nearby DoG extrema to achieve subpixel precision. Eliminate low-contrast keypoints and poorly localized keypoints along edges.
 
-<img src="images/keypoint_localization.png" alt="drawing" style="width:500px;"/>
-
+<p align="center">
+<img src="images/keypoint_localization.png" alt="drawing" style="width:600px;"/>
+</p>
 ### Orientation Assignment:
 
 Compute gradient magnitude and orientation around each keypoint. Construct histograms to determine the dominant orientation. Keypoints are assigned orientations based on the histogram peaks. 
 
 By analyzing the gradient orientation around a keypoint, SIFT ensures that the descriptor is invariant to rotation. The gradient information is used to construct a descriptor that captures the local structure around the keypoint. 
 
-<img src="images/gradient_orientation.png" alt="drawing" style="width:500px;"/>
-
+<p align="center">
+<img src="images/gradient_orientation.png" alt="drawing" style="width:600px;"/>
+</p>
 
 ### Result of SIFT on my input
 ![Alt text](images/sift_features_located.jpeg)
@@ -169,7 +174,9 @@ The step of RANSAC as follows:
 
 Repeat 1~3 step, randomly sample points N times and get the heighest score solution.
 
-<img src="images/RANSAC.png" alt="drawing" style="width:800px;"/>
+<p align="center">
+<img src="images/RANSAC.png" alt="drawing" style="width:600px;"/>
+</p>
 
 `note:` The number of outliers needs to be < 50% for RANSAC to work.
 
@@ -184,13 +191,16 @@ Masks are binary images where each pixel value determines the contribution or we
 
 ![Alt text](images/weighted_blending.jpeg)
 
+<p align="center">
+<img src="images/weighted_blend_plot.jpg" alt="drawing" style="width:600px;"/>
+</p>
 
-
-![Alt text](images/weighted_blend_plot.jpg)
 
 The mask should have the same dimensions as the image, and each pixel in the mask is assigned a weight value between 0 and 1. The mask is then normalized to maintain the overall color during blending.
 
-![Alt text](images/blending_weights.png)
+<p align="center">
+<img src="images/blending_weights.png" alt="drawing" style="width:600px;"/>
+</p>
 
 The purpose of weighted blending is to create a seamless transition between overlapping regions of images, taking into account the relative importance or contribution of each pixel, allowing for a smooth and controlled transition in overlapping regions.
 
@@ -207,4 +217,3 @@ The purpose of weighted blending is to create a seamless transition between over
 
 - https://github.com/Yunyung/Automatic-Panoramic-Image-Stitching
 
-- https://www.csie.ntu.edu.tw/~cyy/courses/vfx/12spring/lectures/handouts/lec04_stitching_4up.pdf
