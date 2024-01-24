@@ -135,6 +135,8 @@ Let's denote the descriptor vectors of two keypoints as $v_1$​ and $v_2$​, a
 
 $$ d_{L2}(\mathbf{v}_1, \mathbf{v}_2) = \sqrt{\sum_{i=1}^{n} (v_{1i} - v_{2i})^2} $$
 
+test
+
 
 
 ![Alt text](images/keypoints_matched.jpeg)
@@ -153,13 +155,12 @@ Homography Transformation Equation:
 $$ \begin{bmatrix} x' \\\ y' \\\ w' \end{bmatrix} = \begin{bmatrix} h_{11} & h_{12} & h_{13} \\\ h_{21} & h_{22} & h_{23} \\\ h_{31} & h_{32} & h_{33} \end{bmatrix} \cdot \begin{bmatrix} x \\\ y \\\ 1 \end{bmatrix} $$
 
 
-
 4. #### RANSAC algorithm
 
 How exactly do you find the values for your Homography Matrix? RANSAC comes to the rescue!
 RANSAC (Random Sample Consensus) is an iterative algorithm commonly used in computer vision to estimate a model's parameters from a set of data points containing outliers. In the context of estimating a homography matrix, RANSAC is often used when dealing with correspondences between points in two images that may include outliers or mismatches.
 
-The step of RANSAC as follows:
+The steps of RANSAC algorithm are as follows:
 
     1. Sample(Randomly) the number of points required to fit the model (Homography), for our purpose the number is 4, to fit the model.
 
@@ -196,7 +197,7 @@ Masks are binary images where each pixel value determines the contribution or we
 </p>
 
 
-The mask should have the same dimensions as the image, and each pixel in the mask is assigned a weight value between 0 and 1. The mask is then normalized to maintain the overall color during blending.
+The mask should have the same dimensions as the image, and each pixel in the mask is assigned a weight value between 0 and 1. The mask is then normalized to maintain the overall color intensity and brightness during blending.
 
 <p align="center">
 <img src="images/blending_weights.png" alt="drawing" style="width:600px;"/>
@@ -205,6 +206,7 @@ The mask should have the same dimensions as the image, and each pixel in the mas
 The purpose of weighted blending is to create a seamless transition between overlapping regions of images, taking into account the relative importance or contribution of each pixel, allowing for a smooth and controlled transition in overlapping regions.
 
 ![Alt text](images/output.png)
+
 
 ## References
 
