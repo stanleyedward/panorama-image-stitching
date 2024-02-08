@@ -14,14 +14,14 @@ def recurse(image_list, no_of_images):
         result (numpy array): RGB panoramic image
     """
     if no_of_images == 2:
-        result = utils.forward(
+        result, mapped_image = utils.forward(
             query_photo=image_list[no_of_images - 2],
             train_photo=image_list[no_of_images - 1],
         )
 
-        return result
+        return result, mapped_image
     else:
-        result = utils.forward(
+        result,_ = utils.forward(
             query_photo=image_list[no_of_images - 2],
             train_photo=image_list[no_of_images - 1],
         )

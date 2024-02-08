@@ -23,6 +23,8 @@ class ImageStitching:
 
         return image, photo_gray
 
+
+
     @staticmethod
     def _sift_detector(image):
         """Applies SIFT algorithm to the given image

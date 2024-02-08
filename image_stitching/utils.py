@@ -31,6 +31,15 @@ def forward(query_photo, train_photo):
         features_train_image, features_query_image
     )
 
+    mapped_feature_image = cv2.drawMatches(
+                        train_photo,
+                        keypoints_train_image,
+                        query_photo,
+                        keypoints_query_image,
+                        matches[:100],
+                        None,
+                        flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+    
     M = image_stitching.compute_homography(
         keypoints_train_image, keypoints_query_image, matches, reprojThresh=4
     )
@@ -44,11 +53,12 @@ def forward(query_photo, train_photo):
         query_photo, train_photo, homography_matrix
     )
     # mapped_image = cv2.drawMatches(train_photo, keypoints_train_image, query_photo, keypoints_query_image, matches[:100], None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
-
+    mapped_float_32 = np.float32(mapped_feature_image)
     result_float32 = np.float32(result)
     result_rgb = cv2.cvtColor(result_float32, cv2.COLOR_BGR2RGB)
-
-    return result_rgb
+    mapped_feature_image_rgb = cv2.cvtColor(mapped_float_32, cv2.COLOR_BGR2RGB)
+    
+    return result_rgb, mapped_feature_image_rgb
 
 
 if __name__ == "__main__":

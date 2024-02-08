@@ -14,8 +14,9 @@ def main(image_dir_list):
     """
 
     images_list, no_of_images = read_images.read(image_dir_list)
-    result = recursion.recurse(images_list, no_of_images)
+    result, mapped_image = recursion.recurse(images_list, no_of_images)
     cv2.imwrite("outputs/panorama_image.jpg", result)
+    cv2.imwrite("outputs/mapped_image.jpg", mapped_image)
 
     print(f"Panoramic image saved at: outputs/panorama_image.jpg")
 
