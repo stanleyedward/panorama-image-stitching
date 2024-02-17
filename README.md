@@ -68,6 +68,19 @@ Panoramic image stitching with overlapping images using SIFT detector, Homograph
     Panoramic image saved at: outputs/panorama_image.jpg
     ```
 
+
+## References
+
+
+- [First Principles of Computer Vision - Shree K. Nayar](https://fpcv.cs.columbia.edu/)
+
+- [Distinctive Image Features from Scale-Invariant Keypoints (SIFT)](https://people.eecs.berkeley.edu/~malik/cs294/lowe-ijcv04.pdf)
+
+- https://github.com/linrl3/Image-Stitching-OpenCV
+
+- https://github.com/Yunyung/Automatic-Panoramic-Image-Stitching
+
+
 ## Explained
 
 
@@ -215,14 +228,5 @@ The purpose of weighted blending is to create a seamless transition between over
 
 ![Alt text](outputs/panorama_image.jpg)
 
-## References
 
-
-- [First Principles of Computer Vision - Shree K. Nayar](https://fpcv.cs.columbia.edu/)
-
-- [Distinctive Image Features from Scale-Invariant Keypoints (SIFT)](https://people.eecs.berkeley.edu/~malik/cs294/lowe-ijcv04.pdf)
-
-- https://github.com/linrl3/Image-Stitching-OpenCV
-
-- https://github.com/Yunyung/Automatic-Panoramic-Image-Stitching
 
