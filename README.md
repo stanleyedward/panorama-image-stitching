@@ -46,7 +46,7 @@ Panoramic image stitching with overlapping images using SIFT detector, Homograph
 
 5. #### Check it out!
     > if your results are unsatisfactory
-    consider increasing or decreasing the `self.smoothing_window_size` value in `line 10` of [image_stitching/image_stitching.py](image_stitching/image_stitching.py) 
+    consider increasing or decreasing the `smoothing_window_percent` value in `line 13` of [image_stitching/image_stitching.py](image_stitching/image_stitching.py) 
 
     the output should be exported at `outputs/paranorama_image.jpg`
 
