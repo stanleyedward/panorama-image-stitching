@@ -5,9 +5,13 @@ import cv2
 class ImageStitching:
     """containts the utilities required to stitch images"""
 
-    def __init__(self):
+    def __init__(self, query_photo, train_photo):
         super().__init__()
-        self.smoothing_window_size = 500
+        width_query_photo = query_image.shape[1]
+        width_train_photo = train_image.shape[1]
+        lowest_width = min(width_query_photo, width_train_photo)
+        smoothing_window_percent = 0.10 # consider increasing or decreasing[0.00, 1.00] 
+        self.smoothing_window_size = max(100, min(smoothing_window_percent * lowest_width, 1000))
 
     def give_gray(self, image):
         """receives an image array and returns grayscaled image
