@@ -15,22 +15,22 @@ Panoramic image stitching with overlapping images using SIFT detector, Homograph
 1. #### Clone and cd into the repository:
 
     ```sh
-    $ git clone https://github.com/stanleyedward/panorama-image-stitching.git
-    $ cd panorama-image-stitching
+    git clone https://github.com/stanleyedward/panorama-image-stitching.git
+    cd panorama-image-stitching
      ```
 
 
 2. #### Create and activate the conda environment:
 
     ```sh
-    $ conda env create -f environment.yml
-    $ conda activate panorama
+    conda env create -f environment.yml
+    conda activate panorama
     ```
 
 
 3. #### Add your custom images to the `inputs/` folder manually or using the command line:
     ```sh
-    $ mv left.jpg middle.jpg right.jpg inputs/
+    mv left.jpg middle.jpg right.jpg inputs/
     ```
     dont have any images?   try the preloaded ones located in `inputs/`
 
@@ -38,7 +38,7 @@ Panoramic image stitching with overlapping images using SIFT detector, Homograph
 4. #### Run the script
 
     ```sh
-    $ python panorama.py inputs/left.jpg inputs/middle.jpg inputs/right.jpg
+    python panorama.py inputs/front/front_01.jpeg inputs/front/front_02.jpeg inputs/front/front_03.jpeg
     ```
 
     `Caution:` The sequence of images should be ordered `left to right` from the viewing point. 
@@ -55,7 +55,7 @@ Panoramic image stitching with overlapping images using SIFT detector, Homograph
     This is the output of the following command:
 
     ```sh
-    $ python panorama.py inputs/back/back_01.jpeg inputs/back/back_02.jpeg inputs/back/back_03.jpeg
+    python panorama.py inputs/back/back_01.jpeg inputs/back/back_02.jpeg inputs/back/back_03.jpeg
     ```
 
     ``` sh
