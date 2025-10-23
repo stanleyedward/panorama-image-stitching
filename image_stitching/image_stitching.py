@@ -1,17 +1,25 @@
 import numpy as np
 import cv2
-
+from lightglue import LightGlue, DISK
+from lightglue.utils import rbd
+import torch
 
 class ImageStitching:
-    """containts the utilities required to stitch images"""
+    """contains the utilities required to stitch images"""
 
-    def __init__(self, query_photo, train_photo):
+    def __init__(self, query_photo, train_photo, type="cnn"):
         super().__init__()
         width_query_photo = query_photo.shape[1]
         width_train_photo = train_photo.shape[1]
         lowest_width = min(width_query_photo, width_train_photo)
-        smoothing_window_percent = 0.10 # consider increasing or decreasing[0.00, 1.00] 
+        smoothing_window_percent = 0.10
         self.smoothing_window_size = max(100, min(smoothing_window_percent * lowest_width, 1000))
+        self.type = type
+        if type == "cnn":
+            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            self.extractor = DISK(max_num_keypoints=2048).eval().to(self.device)
+            self.matcher = LightGlue(features='disk').eval().to(self.device)
+            print(f"[INFO]loaded both disk and lightglue models!")
 
     def give_gray(self, image):
         """receives an image array and returns grayscaled image
@@ -23,11 +31,11 @@ class ImageStitching:
             image (numpy array): same as image input
             photo_gray (numpy array): grayscaled images
         """
-        photo_gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-
+        if len(image.shape) == 3 and image.shape[2] == 3:
+            photo_gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+        else:
+            photo_gray = image
         return image, photo_gray
-
-
 
     @staticmethod
     def _sift_detector(image):
@@ -61,6 +69,70 @@ class ImageStitching:
         raw_matches = sorted(best_matches, key=lambda x: x.distance)
 
         return raw_matches
+    
+    def _prepare_image_for_disk(self, gray_image):
+        """Convert grayscale image to format expected by DISK
+        
+        Args:
+            gray_image: numpy array HxW grayscale image
+            
+        Returns:
+            torch tensor: 1x3xHxW normalized to [0,1]
+        """
+        img_3ch = np.stack([gray_image] * 3, axis=0)  # [3, H, W]
+        img_tensor = torch.from_numpy(img_3ch / 255.0).float().unsqueeze(0).to(self.device)
+        return img_tensor
+
+    def extract_and_match_features(self, train_gray, query_gray):
+        """Extract DISK features and match using LightGlue
+        
+        Args:
+            train_gray: grayscale train image (numpy array)
+            query_gray: grayscale query image (numpy array)
+            
+        Returns:
+            keypoints_train: list of cv2.KeyPoint
+            keypoints_query: list of cv2.KeyPoint
+            matches: list of cv2.DMatch
+        """
+        image0 = self._prepare_image_for_disk(train_gray)
+        image1 = self._prepare_image_for_disk(query_gray)
+        
+        with torch.inference_mode():
+            feats0 = self.extractor.extract(image0)
+            feats1 = self.extractor.extract(image1)
+            
+            matches01 = self.matcher({'image0': feats0, 'image1': feats1})
+            feats0, feats1, matches01 = [rbd(x) for x in [feats0, feats1, matches01]]
+            
+            match_indices = matches01['matches']  # shape (K, 2)
+            match_scores = matches01['scores']  # shape (K,)
+            
+            kpts0 = feats0['keypoints'].cpu().numpy()  # shape (N0, 2)
+            kpts1 = feats1['keypoints'].cpu().numpy()  # shape (N1, 2)
+        
+        keypoints_train = [cv2.KeyPoint(float(pt[0]), float(pt[1]), 1.0) for pt in kpts0]
+        keypoints_query = [cv2.KeyPoint(float(pt[0]), float(pt[1]), 1.0) for pt in kpts1]
+        
+        matches = []
+        match_indices_np = match_indices.cpu().numpy()
+        match_scores_np = match_scores.cpu().numpy()
+        
+        for i in range(len(match_indices_np)):
+            idx0 = int(match_indices_np[i, 0])  # index in image0 (train)
+            idx1 = int(match_indices_np[i, 1])  # index in image1y(query)
+            score = float(match_scores_np[i])
+            
+            distance = 1.0 - score
+            match = cv2.DMatch(idx0, idx1, distance)
+            matches.append(match)
+        
+        matches = sorted(matches, key=lambda x: x.distance)
+        
+        print(f"DISK+LightGlue: Extracted {len(keypoints_train)} train keypoints, "
+              f"{len(keypoints_query)} query keypoints, found {len(matches)} matches")
+        
+        return keypoints_train, keypoints_query, matches
 
     def compute_homography(
         self, keypoints_train_image, keypoints_query_image, matches, reprojThresh
@@ -69,9 +141,9 @@ class ImageStitching:
         uses RANSAC algorithm to find the best matches iteratively.
 
         Args:
-            keypoints_train_image: keypoints found using SIFT in train image
-            keypoints_query_image: keypoints found using SIFT in query image
-            matches: matches found using Brute Force
+            keypoints_train_image: keypoints found in train image
+            keypoints_query_image: keypoints found in query image
+            matches: matches found using LightGlue
             reprojThresh: threshold for error
 
         Returns:
@@ -97,9 +169,8 @@ class ImageStitching:
             )
 
             return (matches, H, status)
-
         else:
-            print(f"Minimum match count not satisfied cannot get homopgrahy")
+            print(f"Minimum match count not satisfied, cannot get homography")
             return None
 
     def create_mask(self, query_image, train_image, version):
